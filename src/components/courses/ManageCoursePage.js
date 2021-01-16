@@ -1,25 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as courseActions from "../../redux/actions/courseActions";
-import * as authorActions from "../../redux/actions/authorActions";
+import { loadCourses } from "../../redux/actions/courseActions";
+import { loadAuthors } from "../../redux/actions/authorActions";
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 
 class ManageCoursePage extends Component {
 
   componentDidMount() {
 
-    const { courses, authors, actions } = this.props;
+    const { courses, authors, loadAuthors, loadCourses } = this.props;
 
     if (courses.length === 0) {
-      actions.loadCourses()
+      loadCourses()
         .catch(error => {
           alert("Loading courses failed ", error);
         })
     }
 
     if (authors.length === 0) {
-      actions.loadAuthors()
+      loadAuthors()
         .catch(error => {
           alert("Loading authors failed ", error);
         })
@@ -38,7 +37,8 @@ class ManageCoursePage extends Component {
 ManageCoursePage.propTypes = {
   authors: PropTypes.array.isRequired,
   courses: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  loadCourses: PropTypes.func.isRequired,
+  loadAuthors: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -49,14 +49,9 @@ const mapStateToProps = (state) => {
 };
 
 // mapDispatchToProps: bindActionCreators approach
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // named actions because in this case all actions are wrapped
-    actions: {
-      loadCourses: bindActionCreators(courseActions.loadCourses, dispatch),
-      loadAuthors: bindActionCreators(authorActions.loadAuthors, dispatch)
-    }
-  };
+const mapDispatchToProps = {
+  loadCourses, 
+  loadAuthors
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage);
