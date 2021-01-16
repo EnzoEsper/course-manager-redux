@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as courseActions from "../../redux/actions/courseActions";
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 class CoursesPage extends Component {
   state = {
     course: {
@@ -16,7 +17,15 @@ class CoursesPage extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.createCourse(this.state.course);
+    
+    // for the approach when mapDispatchToProps in NOT passed as an argument to the connect function
+    // this.props.dispatch(courseActions.createCourse(this.state.course));
+
+    // for the Manual Mapping approach
+    // this.props.createCourse(this.state.course);
+    
+    // for the bindActionCreators approach
+    this.props.actions.createCourse(this.state.course);
   };
 
   render() {
@@ -39,9 +48,16 @@ class CoursesPage extends Component {
 }
 
 CoursesPage.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
   courses: PropTypes.array.isRequired,
-  createCourse: PropTypes.func.isRequired
+  
+  // the dispatch function is binded to the function when the mapDispatchToProps is NOT passed as an argument to the connect function
+  // dispatch: PropTypes.func.isRequired,
+  
+  // for Manual Mapping approach
+  // createCourse: PropTypes.func.isRequired
+
+  // for bindActionCreators approach
+  actions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -50,9 +66,18 @@ const mapStateToProps = (state) => {
   };
 };
 
+// mapDispatchToProps: Manual Mapping approach
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     createCourse: course => dispatch(courseActions.createCourse(course))
+//   };
+// };
+
+// mapDispatchToProps: bindActionCreators approach
 const mapDispatchToProps = (dispatch) => {
   return {
-    createCourse: course => dispatch(courseActions.createCourse(course))
+    // named actions because in this case all actions are wrapped
+    actions: bindActionCreators(courseActions, dispatch)
   };
 };
 
