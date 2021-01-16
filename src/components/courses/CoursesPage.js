@@ -25,7 +25,7 @@ class CoursesPage extends Component {
     // this.props.createCourse(this.state.course);
     
     // for the bindActionCreators approach
-    this.props.createCourse(this.state.course);
+    this.props.actions.createCourse(this.state.course);
   };
 
   render() {
@@ -54,10 +54,10 @@ CoursesPage.propTypes = {
   // dispatch: PropTypes.func.isRequired,
   
   // for Manual Mapping approach and Object approach
-  createCourse: PropTypes.func.isRequired
+  // createCourse: PropTypes.func.isRequired
 
   // for bindActionCreators approach
-  // actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -74,16 +74,16 @@ const mapStateToProps = (state) => {
 // };
 
 // mapDispatchToProps: bindActionCreators approach
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     // named actions because in this case all actions are wrapped
-//     actions: bindActionCreators(courseActions, dispatch)
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // named actions because in this case all actions are wrapped
+    actions: bindActionCreators(courseActions, dispatch)
+  };
+};
 
 // mapDispatchToProps: Object approach
-const mapDispatchToProps = {
-  createCourse: courseActions.createCourse
-};
+// const mapDispatchToProps = {
+//   createCourse: courseActions.createCourse
+// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
