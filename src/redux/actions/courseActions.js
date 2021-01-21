@@ -1,7 +1,7 @@
 import * as types from "./actionTypes";
 import * as courseApi from "../../api/courseApi";
 
-export function loadCoursesSuccess(courses) {
+export function loadCourseSuccess(courses) {
   return { type: types.LOAD_COURSES_SUCCESS, courses };
 }
 
@@ -14,13 +14,13 @@ export function updateCourseSuccess(course) {
 }
 
 export function loadCourses() {
-  return function (dispatch) {
+  return function(dispatch) {
     return courseApi
       .getCourses()
-      .then((courses) => {
-        dispatch(loadCoursesSuccess(courses));
+      .then(courses => {
+        dispatch(loadCourseSuccess(courses));
       })
-      .catch((error) => {
+      .catch(error => {
         throw error;
       });
   };
